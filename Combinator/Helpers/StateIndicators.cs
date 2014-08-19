@@ -62,8 +62,9 @@
         {
             return state =>
             {
-                if (state.Apply(End()).IsSuccess || state.Input[state.CurrentPosition] == '\n')
-                    return ParseResult<T>.Success();
+                bool isEnd = state.Apply(End()).IsSuccess;
+                if (isEnd || state.Input[state.CurrentPosition] == '\n')
+                    return ParseResult<T>.Success(default(T), isEnd ? 0 : 1);
                 return ParseResult<T>.Failed();
             };
         }
