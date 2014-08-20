@@ -1,71 +1,101 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Combinator.Helpers;
 
 namespace Combinator
 {
     public static class Parser
     {
-        public static ParserFn<char> Char()
+        public static ParserFn<char> Char(string ruleName = null)
         {
-            return state =>
+            return new ParserFn<char>
             {
-                if (!state.Eof())
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                CtorParams = new Dictionary<string, string>(),
+                Fn = state =>
                 {
-                    return ParseResult<char>.Success(state.Input[state.CurrentPosition], 1);
+                    if (!state.Eof())
+                    {
+                        return ParseResult<char>.Success(state.Input[state.CurrentPosition], 1);
+                    }
+                    return ParseResult<char>.Failed();
                 }
-                return ParseResult<char>.Failed();
             };
         }
 
-        public static ParserFn<char> Char(char ch)
+        public static ParserFn<char> Char(char ch, string ruleName = null)
         {
-            return state =>
+            return new ParserFn<char>
             {
-                if (!state.Eof() && ch == state.Input[state.CurrentPosition])
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                CtorParams = new Dictionary<string, string> { {"ch", ch.ToString()} },
+                Fn = state =>
                 {
-                    return ParseResult<char>.Success(ch, 1);
+                    if (!state.Eof() && ch == state.Input[state.CurrentPosition])
+                    {
+                        return ParseResult<char>.Success(ch, 1);
+                    }
+                    return ParseResult<char>.Failed();
                 }
-                return ParseResult<char>.Failed();
             };
         }
 
-        public static ParserFn<string> String(string substring)
+        public static ParserFn<string> String(string substring, string ruleName = null)
         {
-            return state =>
+            return new ParserFn<string>()
             {
-                if (checkString(substring, state))
-                    return ParseResult<string>.Success(substring, substring.Length);
-                return ParseResult<string>.Failed();
-            };
-        }
-
-        public static ParserFn<string> Strings(List<string> substrings)
-        {
-            return state =>
-            {
-                foreach (string substring in substrings)
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                CtorParams = new Dictionary<string, string>() { {"substring", substring} },
+                Fn = state =>
                 {
                     if (checkString(substring, state))
                         return ParseResult<string>.Success(substring, substring.Length);
+                    return ParseResult<string>.Failed();
                 }
-                return ParseResult<string>.Failed();
             };
         }
 
-        public static ParserFn<string> RegEx(string pattern)
+        public static ParserFn<string> Strings(List<string> substrings, string ruleName = null)
         {
-            return state =>
+            return new ParserFn<string>()
             {
-                if (!pattern.StartsWith("^"))
-                    pattern = "^" + pattern;
-                string rest = state.Input.Substring(state.CurrentPosition);
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                CtorParams = new Dictionary<string, string>()
+                {
+                    {"substrings", substrings.Aggregate((a, b) => string.Format("{0}, {1}", a, b))}
+                },
+                Fn = state =>
+                {
+                    foreach (string substring in substrings)
+                    {
+                        if (checkString(substring, state))
+                            return ParseResult<string>.Success(substring, substring.Length);
+                    }
+                    return ParseResult<string>.Failed();
+                }
+            };
+        }
 
-                var regex = new Regex(pattern);
-                Match match = regex.Match(rest);
+        public static ParserFn<string> RegEx(string pattern, string ruleName = null)
+        {
+            return new ParserFn<string>()
+            {
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                CtorParams = new Dictionary<string, string>() {{"pattern", pattern}},
+                Fn = state =>
+                {
+                    if (!pattern.StartsWith("^"))
+                        pattern = "^" + pattern;
+                    string rest = state.Input.Substring(state.CurrentPosition);
 
-                if (match.Success)
-                    return ParseResult<string>.Success(match.Value, match.Value.Length);
-                return ParseResult<string>.Failed();
+                    var regex = new Regex(pattern);
+                    Match match = regex.Match(rest);
+
+                    if (match.Success)
+                        return ParseResult<string>.Success(match.Value, match.Value.Length);
+                    return ParseResult<string>.Failed();
+                }
             };
         }
 

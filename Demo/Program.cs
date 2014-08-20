@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Combinator;
+using Combinator.Fundamentals;
 using Combinator.Helpers;
 
 namespace Demo
@@ -10,8 +11,8 @@ namespace Demo
         static void Main(string[] args)
         {
             string result = "";
-            //result = SampleGrammar.Test();
-            List.Grammar.Top();
+            
+            result = Company.Grammar.Test();
 
             Console.WriteLine(result);
             Console.ReadLine();
