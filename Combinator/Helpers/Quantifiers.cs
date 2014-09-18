@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Combinator.Fundamentals;
 
 namespace Combinator.Helpers
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Combinator.Fundamentals;
 
 namespace Combinator.Helpers
 {
@@ -60,7 +61,6 @@ namespace Combinator.Helpers
                 }
             };
         }
-
 
         public static ParserFn<T> Or<T>(this ParserFn<T> p1, ParserFn<T> p2, string ruleName = null)
         {

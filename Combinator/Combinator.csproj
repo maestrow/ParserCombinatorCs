@@ -45,7 +45,7 @@
     <Compile Include="Fundamentals\StackTree.cs" />
     <Compile Include="Fundamentals\Tree.cs" />
     <Compile Include="Fundamentals\TreeItem.cs" />
-    <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Fundamentals\Helper.cs" />
     <Compile Include="Helpers\LogicOperators.cs" />
     <Compile Include="Helpers\Predicates.cs" />
     <Compile Include="Helpers\Quantifiers.cs" />

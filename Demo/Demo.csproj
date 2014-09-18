@@ -46,7 +46,6 @@
     <Compile Include="Company\Grammar.cs" />
     <Compile Include="Company\PersonName.cs" />
     <Compile Include="Company\PhoneNum.cs" />
-    <Compile Include="LeftRecursion\Grammar.cs" />
     <Compile Include="List\Grammar.cs" />
     <Compile Include="List\List.cs" />
     <Compile Include="List\ListItem.cs" />

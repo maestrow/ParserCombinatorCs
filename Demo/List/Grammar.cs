@@ -8,22 +8,24 @@ using Combinator.Helpers;
 
 namespace Demo.List
 {
-    public static class Grammar
+    public class Grammar
     {
-        public static ParserFn<object> Top()
+        public ParserFn<object> Root()
         {
             return List(0);
         }
 
-        static ParserFn<object> List(int level)
+        ParserFn<object> List(int level)
         {
             return Item(level).AtLeastOnce().Select(objects => objects.Last());
         }
 
-        static ParserFn<object> Item(int level)
+        ParserFn<object> Item(int level)
         {
             ParserFn<char> bullet = Parser.Char('-').Or(Parser.Char('+')).Or(Parser.Char('*'));
-            ParserFn<object> content = StateIndicators.isEol().Not().And(Parser.Char()).AtLeastOnce().And(StateIndicators.isEol());
+            ParserFn<object> content =  new[] { StateIndicators.isEol().Not(), Parser.Char().Select(a => (object)a) }
+                .And().AtLeastOnce().And(StateIndicators.isEol());
+
             ParserFn<object> item = StateIndicators.Begin<char>()
                 .And(Parser.Char(' ').RepeatExactly(level).Join())
                 .And(bullet)

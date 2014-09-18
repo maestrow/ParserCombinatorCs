@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Combinator.Helpers
+namespace Combinator.Fundamentals
 {
     public static class Helper
     {

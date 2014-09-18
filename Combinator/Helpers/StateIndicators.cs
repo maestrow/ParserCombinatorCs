@@ -1,4 +1,6 @@
-﻿namespace Combinator.Helpers
+﻿using Combinator.Fundamentals;
+
+namespace Combinator.Helpers
 {
     public static class StateIndicators
     {
