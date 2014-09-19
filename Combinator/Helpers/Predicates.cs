@@ -11,11 +11,6 @@ namespace Combinator.Helpers
             return new ParserFn<T>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>()
-                {
-                    {"parser", parser.Name},
-                    {"predicate", predicate.ToString()}
-                },
                 Fn = state =>
                 {
                     ParseResult<T> presult = state.Apply(parser);

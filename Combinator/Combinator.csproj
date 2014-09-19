@@ -41,11 +41,12 @@
   <ItemGroup>
     <Compile Include="Debugging\AppliedRule.cs" />
     <Compile Include="Debugging\DebugInfo.cs" />
-    <Compile Include="Debugging\ParserInfo.cs" />
+    <Compile Include="Helpers\And.cs" />
+    <Compile Include="IParserInfo.cs" />
+    <Compile Include="Fundamentals\Helper.cs" />
     <Compile Include="Fundamentals\StackTree.cs" />
     <Compile Include="Fundamentals\Tree.cs" />
     <Compile Include="Fundamentals\TreeItem.cs" />
-    <Compile Include="Fundamentals\Helper.cs" />
     <Compile Include="Helpers\LogicOperators.cs" />
     <Compile Include="Helpers\Predicates.cs" />
     <Compile Include="Helpers\Quantifiers.cs" />

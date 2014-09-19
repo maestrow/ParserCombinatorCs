@@ -13,7 +13,6 @@ namespace Combinator
             return new ParserFn<char>
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>(),
                 Fn = state =>
                 {
                     if (!state.Eof())
@@ -30,7 +29,6 @@ namespace Combinator
             return new ParserFn<char>
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string> { {"ch", ch.ToString()} },
                 Fn = state =>
                 {
                     if (!state.Eof() && ch == state.Input[state.CurrentPosition])
@@ -47,7 +45,6 @@ namespace Combinator
             return new ParserFn<string>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>() { {"substring", substring} },
                 Fn = state =>
                 {
                     if (checkString(substring, state))
@@ -62,10 +59,6 @@ namespace Combinator
             return new ParserFn<string>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>()
-                {
-                    {"substrings", substrings.Aggregate((a, b) => string.Format("{0}, {1}", a, b))}
-                },
                 Fn = state =>
                 {
                     foreach (string substring in substrings)
@@ -83,7 +76,6 @@ namespace Combinator
             return new ParserFn<string>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>() {{"pattern", pattern}},
                 Fn = state =>
                 {
                     if (!pattern.StartsWith("^"))

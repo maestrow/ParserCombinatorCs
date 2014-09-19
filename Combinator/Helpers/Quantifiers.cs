@@ -11,7 +11,6 @@ namespace Combinator.Helpers
             return new ParserFn<IEnumerable<T>>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>() {{"parser", parser.Name}},
                 Fn = state =>
                 {
                     List<T> listResult = many(parser, state);
@@ -28,7 +27,6 @@ namespace Combinator.Helpers
             return new ParserFn<IEnumerable<T>>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>() {{"parser", parser.Name}},
                 Fn = state =>
                 {
                     return ParseResult<IEnumerable<T>>.Success(many(parser, state));
@@ -41,7 +39,6 @@ namespace Combinator.Helpers
             return new ParserFn<T>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>() {{"parser", parser.Name}},
                 Fn = state =>
                 {
                     var presult = state.Apply(parser);
@@ -55,11 +52,6 @@ namespace Combinator.Helpers
             return new ParserFn<IEnumerable<T>>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
-                CtorParams = new Dictionary<string, string>()
-                {
-                    {"parser", parser.Name},
-                    {"count", count.ToString()}
-                },
                 Fn = state =>
                 {
                     var listResult = new List<T>();

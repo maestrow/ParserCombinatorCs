@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Combinator.Debugging;
+using Combinator.Helpers;
 
 namespace Combinator
 {
@@ -9,30 +10,23 @@ namespace Combinator
 
     public class ParserFn<T> : IParserInfo
     {
-        
+        public ParserFn()
+        {
+        }
+
+        public ParserFn(string name)
+        {
+            this.Name = name;
+        }
+
         public ParserDelegate<T> Fn;
 
         public string Name { get; set; }
-        public Dictionary<string, string> CtorParams { get; set; }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}", 
-                Name, 
-                CtorParams
-                    .Select(KeyValueSelector)
-                    .Aggregate((a, b) => string.Format("{0}, {1}", a, b))
-            );
-        }
-
-        private Func<KeyValuePair<string, string>, string> KeyValueSelector
-        {
-            get
-            {
-                return kvp => string.Format("{0} = {1}", kvp.Key, kvp.Value);
-            }
+            return Name;
         }
     }
-
     
 }
