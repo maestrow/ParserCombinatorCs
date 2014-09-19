@@ -1,4 +1,4 @@
-﻿using Combinator.Fundamentals;
+﻿using Combinator.Infrastructure;
 
 namespace Combinator.Helpers
 {

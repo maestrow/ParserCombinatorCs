@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Combinator.Fundamentals
+namespace Combinator.Infrastructure
 {
     public class Tree<T>: List<TreeItem<T>>
     {

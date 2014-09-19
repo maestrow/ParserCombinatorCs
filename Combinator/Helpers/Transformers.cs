@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Combinator.Fundamentals;
+using Combinator.Infrastructure;
 
 namespace Combinator.Helpers
 {

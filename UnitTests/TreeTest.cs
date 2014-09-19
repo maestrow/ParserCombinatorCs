@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Combinator.Fundamentals;
+using Combinator.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
