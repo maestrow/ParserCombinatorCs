@@ -1,27 +1,27 @@
 ﻿namespace Combinator
 {
-    public class ParseResult<T>
+    public class ParseResult
     {
         #region Static
 
-        public static ParseResult<T> Success(T result, int increment)
+        public static ParseResult Success(object result, int increment)
         {
-            return new ParseResult<T>(true, result, increment);
+            return new ParseResult(true, result, increment);
         }
 
-        public static ParseResult<T> Success(T result)
+        public static ParseResult Success(object result)
         {
-            return new ParseResult<T>(true, result, 0);
+            return new ParseResult(true, result, 0);
         }
 
-        public static ParseResult<T> Success()
+        public static ParseResult Success()
         {
-            return new ParseResult<T>(true);
+            return new ParseResult(true);
         }
 
-        public static ParseResult<T> Failed()
+        public static ParseResult Failed()
         {
-            return new ParseResult<T>();
+            return new ParseResult();
         }
 
         #endregion
@@ -34,18 +34,18 @@
         {
         }
 
-        public ParseResult(bool success, T result, int increment)
+        public ParseResult(bool success, object result, int increment)
         {
             IsSuccess = success;
             Result = result;
             Increment = increment;
         }
 
-        public ParseResult(bool success, int increment): this(success, default(T), increment)
+        public ParseResult(bool success, int increment): this(success, default(object), increment)
         {
         }
 
-        public ParseResult(bool success): this(success, default(T), 0)
+        public ParseResult(bool success): this(success, default(object), 0)
         {
         }
 
@@ -57,7 +57,7 @@
 
         public bool IsSuccess { get; private set; }
 
-        public T Result { get; private set; }
+        public object Result { get; private set; }
 
         public int Increment { get; private set; }
 

@@ -6,9 +6,9 @@ using Combinator.Helpers;
 
 namespace Combinator
 {
-    public delegate ParseResult<T> ParserDelegate<T>(State state);
+    public delegate ParseResult ParserDelegate(State state);
 
-    public class ParserFn<T> : IParserInfo
+    public class ParserFn : IParserInfo
     {
         public ParserFn()
         {
@@ -19,13 +19,18 @@ namespace Combinator
             this.Name = name;
         }
 
-        public ParserDelegate<T> Fn;
+        public ParserDelegate Fn;
 
         public string Name { get; set; }
 
         public override string ToString()
         {
             return Name;
+        }
+
+        public static And operator +(ParserFn op1, ParserFn op2)
+        {
+            return new And(new[] {op1, op2});
         }
     }
     

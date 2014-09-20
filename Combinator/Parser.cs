@@ -8,55 +8,55 @@ namespace Combinator
 {
     public static class Parser
     {
-        public static ParserFn<char> Char(string ruleName = null)
+        public static ParserFn Char(string ruleName = null)
         {
-            return new ParserFn<char>
+            return new ParserFn
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     if (!state.Eof())
                     {
-                        return ParseResult<char>.Success(state.Input[state.CurrentPosition], 1);
+                        return ParseResult.Success(state.Input[state.CurrentPosition], 1);
                     }
-                    return ParseResult<char>.Failed();
+                    return ParseResult.Failed();
                 }
             };
         }
 
-        public static ParserFn<char> Char(char ch, string ruleName = null)
+        public static ParserFn Char(char ch, string ruleName = null)
         {
-            return new ParserFn<char>
+            return new ParserFn
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     if (!state.Eof() && ch == state.Input[state.CurrentPosition])
                     {
-                        return ParseResult<char>.Success(ch, 1);
+                        return ParseResult.Success(ch, 1);
                     }
-                    return ParseResult<char>.Failed();
+                    return ParseResult.Failed();
                 }
             };
         }
 
-        public static ParserFn<string> String(string substring, string ruleName = null)
+        public static ParserFn String(string substring, string ruleName = null)
         {
-            return new ParserFn<string>()
+            return new ParserFn()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     if (checkString(substring, state))
-                        return ParseResult<string>.Success(substring, substring.Length);
-                    return ParseResult<string>.Failed();
+                        return ParseResult.Success(substring, substring.Length);
+                    return ParseResult.Failed();
                 }
             };
         }
 
-        public static ParserFn<string> Strings(List<string> substrings, string ruleName = null)
+        public static ParserFn Strings(List<string> substrings, string ruleName = null)
         {
-            return new ParserFn<string>()
+            return new ParserFn()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
@@ -64,16 +64,16 @@ namespace Combinator
                     foreach (string substring in substrings)
                     {
                         if (checkString(substring, state))
-                            return ParseResult<string>.Success(substring, substring.Length);
+                            return ParseResult.Success(substring, substring.Length);
                     }
-                    return ParseResult<string>.Failed();
+                    return ParseResult.Failed();
                 }
             };
         }
 
-        public static ParserFn<string> RegEx(string pattern, string ruleName = null)
+        public static ParserFn RegEx(string pattern, string ruleName = null)
         {
-            return new ParserFn<string>()
+            return new ParserFn()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
@@ -86,8 +86,8 @@ namespace Combinator
                     Match match = regex.Match(rest);
 
                     if (match.Success)
-                        return ParseResult<string>.Success(match.Value, match.Value.Length);
-                    return ParseResult<string>.Failed();
+                        return ParseResult.Success(match.Value, match.Value.Length);
+                    return ParseResult.Failed();
                 }
             };
         }

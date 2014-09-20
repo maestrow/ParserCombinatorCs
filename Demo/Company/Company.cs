@@ -10,5 +10,15 @@ namespace Demo.Company
     {
         public string CompanyName { get; set; }
         public IEnumerable<Employee> Employees { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}",
+                CompanyName,
+                Employees
+                    .Select(a => a.ToString())
+                    .DefaultIfEmpty()
+                    .Aggregate((a, b) => string.Format("{0}, {1}", a, b)));
+        }
     }
 }

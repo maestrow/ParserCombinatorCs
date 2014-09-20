@@ -10,27 +10,48 @@ namespace Demo.Company
 {
     public static class Grammar
     {
-        public static ParserFn<Company> Top()
-        {
-            ParserFn<string> companyName = Parser.RegEx(@"\w+", "company name");
-            ParserFn<Employee> employee = new[] {Parser.RegEx(@"\w+", "first name"), Parser.String(" "), Parser.RegEx(@"\w+", "last name")}
-                .And()
-                .Select(values => values.ToList())
-                .Select(values => new Employee() {Name = new PersonName() {FirstName = values[0], LastName = values[2]}})
-                .And(Parser.Char(',').Optional(), (a, b) => a)
-                .And(Parser.RegEx(@"\s*"), (a, b) => a, "employee");
-            ParserFn<Company> company = new[] { companyName, Parser.String(" { ") }.And()
-                .And(employee.AtLeastOnce(), (values, employees) => new Company { CompanyName = values.ToList()[0], Employees = employees })
-                .And(Parser.Char('}'), (a, b) => a, "company");
-            return company;
-        }
-
         public static string Test()
         {
-            ParserFn<Company> rule = Top();
+            ParserFn rule = Top();
             var state = new State("Microsoft { Ivan Ivanov, Peter Petrov, Sidor Sidorov }");
-            ParseResult<Company> result = state.Apply(rule);
-            return state.debugInfo.ToString();
+            StringBuilder result = new StringBuilder();
+            
+            ParseResult parseResult = state.Apply(rule);
+            result.AppendLine(parseResult.Result.ToString());
+            result.AppendLine("\r\n==============================================\r\n");
+            result.AppendLine(state.debugInfo.ToString());
+
+            return result.ToString();
+        }
+
+        public static ParserFn Top()
+        {
+            ParserFn companyName = Parser.RegEx(@"\w+", "company name");
+            ParserFn employee = (
+                Parser.RegEx(@"\w+", "first name") +
+                Parser.String(" ") +
+                Parser.RegEx(@"\w+", "last name"))
+                .Select((List<object> values) => new Employee()
+                {
+                    Name = new PersonName()
+                    {
+                        FirstName = values[0].ToString(), 
+                        LastName = values[2].ToString()
+                    }
+                });
+
+
+            ParserFn employeeItem = (employee + Parser.Char(',').Optional() + Parser.RegEx(@"\s*"))
+                .Select((List<object> values) => (Employee)values[0]);
+
+            ParserFn company = (companyName + Parser.String(" { ") + employeeItem.AtLeastOnce() + Parser.Char('}'))
+                .Select((List<object> values) => new Company() 
+                { 
+                    CompanyName = values[0].ToString(), 
+                    Employees = ((List<object>)values[2]).Cast<Employee>()
+                });
+
+            return company;
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Demo
         public static string Test()
         {
             var state = new State("ababab");
-            ParseResult<string> result = state.Apply(Top);
-            return result.Result;
+            ParseResult result = state.Apply(Top);
+            return result.Result.ToString();
         }
         
-        public static ParserFn<string> Top = new List<ParserFn<char>>
+        public static ParserFn Top = new List<ParserFn>
         {
             Parser.Char('a'), 
             Parser.Char('b')
