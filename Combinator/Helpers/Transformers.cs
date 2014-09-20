@@ -6,6 +6,11 @@ namespace Combinator.Helpers
 {
     public static class Transformers
     {
+        public static ParserFn<object> ToObj<T>(this ParserFn<T> parser)
+        {
+            return parser.Select(a => (object)a);
+        }
+        
         public static ParserFn<T2> Select<T1, T2>(this ParserFn<T1> parser, Func<T1, T2> selector, string ruleName = null)
         {
             return new ParserFn<T2>()
@@ -50,5 +55,6 @@ namespace Combinator.Helpers
                 }
             };
         }
+
     }
 }
