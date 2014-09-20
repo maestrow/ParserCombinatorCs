@@ -17,10 +17,11 @@ namespace Demo.Company
             IParseResult<Company> parseResult = state.Apply(rule);
 
             StringBuilder result = new StringBuilder();
+            result.AppendLine(parseResult.Result.ToString());
+            result.AppendLine("\r\n=============================\r\n");
+            result.AppendLine(state.debugInfo.ToString());
 
-            result.AppendLine(parseResult.ToString());
-
-            return state.debugInfo.ToString();
+            return result.ToString();
         }
         
         public static ParserFn<Company> Top()
@@ -37,7 +38,7 @@ namespace Demo.Company
                 .Select((List<object> values) => new Company
                 {
                     CompanyName = values[0].ToString(), 
-                    Employees = ((List<object>)values[2]).Cast<Employee>()
+                    Employees = (List<Employee>)values[2]
                 });
 
             return company;

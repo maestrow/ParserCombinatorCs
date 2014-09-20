@@ -8,7 +8,17 @@ namespace Combinator.Helpers
     {
         public static ParserFn ToObj<T>(this ParserFn<T> parser)
         {
-            return (ParserFn)parser.Select(a => (object)a);
+            return new ParserFn()
+            {
+                Name = Helper.GetCurrentMethod(),
+                Fn = state =>
+                {
+                    IParseResult<T> result = state.Apply(parser);
+                    if (result.IsSuccess)
+                        return ParseResult<object>.Success(result.Result);
+                    return ParseResult<object>.Failed();
+                }
+            };
         }
 
         public static ParserFn<TR> Select<T1, TR>(this ParserFn parser, Func<T1, TR> selector, string ruleName = null)
@@ -20,7 +30,7 @@ namespace Combinator.Helpers
                 {
                     IParseResult<object> result = state.Apply(parser);
                     if (result.IsSuccess)
-                        return ParseResult<TR>.Success(selector((T1)result.Result), result.Increment);
+                        return ParseResult<TR>.Success(selector((T1)result.Result));
                     return ParseResult<TR>.Failed();
                 }
             };
@@ -35,7 +45,7 @@ namespace Combinator.Helpers
                 {
                     IParseResult<T1> result = state.Apply(parser);
                     if (result.IsSuccess)
-                        return ParseResult<TR>.Success(selector(result.Result), result.Increment);
+                        return ParseResult<TR>.Success(selector(result.Result));
                     return ParseResult<TR>.Failed();
                 }
             };
@@ -50,7 +60,7 @@ namespace Combinator.Helpers
                 {
                     IParseResult<IEnumerable<char>> result = state.Apply(parser);
                     if (result.IsSuccess)
-                        return ParseResult<string>.Success(String.Concat(result.Result), result.Increment);
+                        return ParseResult<string>.Success(String.Concat(result.Result));
                     return ParseResult<string>.Failed();
                 }
             };
@@ -65,7 +75,7 @@ namespace Combinator.Helpers
                 {
                     IParseResult<IEnumerable<string>> result = state.Apply(parser);
                     if (result.IsSuccess)
-                        return ParseResult<string>.Success(String.Concat(result.Result), result.Increment);
+                        return ParseResult<string>.Success(String.Concat(result.Result));
                     return ParseResult<string>.Failed();
                 }
             };
