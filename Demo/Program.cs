@@ -11,7 +11,8 @@ namespace Demo
         {
             string result = "";
             
-            result = Company.Grammar.Test();
+            //result = Company.Grammar.Test();
+            result = List.Grammar.Test();
 
             Console.WriteLine(result);
             Console.ReadLine();

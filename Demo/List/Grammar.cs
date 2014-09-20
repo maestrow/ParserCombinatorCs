@@ -10,29 +10,36 @@ namespace Demo.List
 {
     public class Grammar
     {
-        public ParserFn<object> Root()
+        public static string Test()
         {
-            return List(0);
+            ParserFn<IEnumerable<string>> rule = Root();
+            var state = new State("- 1111\n- 222\n- rfrfrf");
+            IParseResult<IEnumerable<string>> parseResult = state.Apply(rule);
+
+            StringBuilder result = new StringBuilder();
+            result.AppendLine(parseResult.Result.Aggregate((a, b) => string.Format("{0}, {1}", a, b)));
+            result.AppendLine("\r\n=============================\r\n");
+            result.AppendLine(state.debugInfo.ToString());
+
+            return result.ToString();
         }
 
-        ParserFn<object> List(int level)
+        public static ParserFn<IEnumerable<string>> Root()
         {
-            return Item(level).AtLeastOnce().Select(objects => objects.Last());
+            ParserFn<char> bullet = Parser.Char('-') | Parser.Char('+') | Parser.Char('*');
+            ParserFn<string> content = (Parser.RegEx(".+").ToObj() + StateIndicators.isEol().ToObj())
+                .Select((List<object> values) => (string)values[0]);
+
+            ParserFn<string> item = (StateIndicators.isBol().ToObj() + bullet.ToObj() + content.ToObj())
+                .Select((List<object> values) => (string)values[2]);
+
+            ParserFn<IEnumerable<string>> list = item.AtLeastOnce();
+
+            return list;
         }
 
-        ParserFn<object> Item(int level)
-        {
-            ParserFn<char> bullet = Parser.Char('-').Or(Parser.Char('+')).Or(Parser.Char('*'));
-            ParserFn<object> content =  new[] { StateIndicators.isEol().Not(), Parser.Char().Select(a => (object)a) }
-                .And().AtLeastOnce().And(StateIndicators.isEol());
-
-            ParserFn<object> item = StateIndicators.Begin<char>()
-                .And(Parser.Char(' ').RepeatExactly(level).Join())
-                .And(bullet)
-                .And(Parser.Char(' '))
-                .And(content)
-                .And(List(level + 1).Optional());
-            return item;
-        }
+        //private ParseResult<ListItem> Item(State state)
+        //{
+        //}
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Demo.List
 {
-    class ListItem
+    public class ListItem
     {
+        public string Caption { get; set; }
+        public List<ListItem> Sublist { get; set; }
     }
 }

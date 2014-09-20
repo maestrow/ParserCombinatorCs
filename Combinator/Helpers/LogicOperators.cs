@@ -8,13 +8,11 @@ namespace Combinator.Helpers
 {
     public static class LogicOperators
     {
-        [Obsolete("Такой And не поддается оптимизации. Используйте +")]
         public static ParserFn<T2> And<T1, T2>(this ParserFn<T1> p1, ParserFn<T2> p2, string ruleName = null)
         {
             return And(p1, p2, (t1, t2) => t2, ruleName);
         }
 
-        [Obsolete("Такой And не поддается оптимизации. Используйте +")]
         public static ParserFn<TR> And<T1, T2, TR>(this ParserFn<T1> p1, ParserFn<T2> p2, Func<T1, T2, TR> selector, string ruleName = null)
         {
             return new ParserFn<TR>()

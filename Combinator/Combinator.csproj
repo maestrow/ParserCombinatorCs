@@ -41,7 +41,8 @@
   <ItemGroup>
     <Compile Include="Debugging\AppliedRule.cs" />
     <Compile Include="Debugging\DebugInfo.cs" />
-    <Compile Include="Helpers\And.cs" />
+    <Compile Include="Helpers\AndParser.cs" />
+    <Compile Include="Helpers\OrParser.cs" />
     <Compile Include="IParserInfo.cs" />
     <Compile Include="Infrastructure\Helper.cs" />
     <Compile Include="Infrastructure\StackTree.cs" />

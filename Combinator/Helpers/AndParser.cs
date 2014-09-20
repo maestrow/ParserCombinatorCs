@@ -8,25 +8,19 @@ using Combinator.Infrastructure;
 
 namespace Combinator.Helpers
 {
-    public class And: ParserFn
+    public class AndParser: ParserFn
     {
         public IList<ParserFn> Container { get; set; }
 
-        public And(string ruleName = null): this(new List<ParserFn>(), ruleName)
+        public AndParser(string ruleName = null): this(new List<ParserFn>(), ruleName)
         {
         }
 
-        public And(IEnumerable<ParserFn> parsers, string ruleName = null)
+        public AndParser(IEnumerable<ParserFn> parsers, string ruleName = null)
         {
             Container = parsers.ToList();
             Name = ruleName;
             this.Fn = fn;
-        }
-
-        public static And operator +(And op1, ParserFn op2)
-        {
-            op1.Container.Add(op2);
-            return op1;
         }
 
         private IParseResult<object> fn(State state) 

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.List
+namespace Combinator.Optimization
 {
-    class List
+    public interface IOptimizer
     {
+        ParserFn Optimize(ParserFn parser);
     }
 }

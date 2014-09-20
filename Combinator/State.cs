@@ -1,8 +1,9 @@
-﻿using Combinator.Debugging;
+﻿using System.Collections.Generic;
+using Combinator.Debugging;
 
 namespace Combinator
 {
-    public class State
+    public class State: Stack<object>
     {
         public DebugInfo debugInfo { get; private set; }
 
