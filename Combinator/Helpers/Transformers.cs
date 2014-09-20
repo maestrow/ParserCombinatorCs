@@ -6,22 +6,37 @@ namespace Combinator.Helpers
 {
     public static class Transformers
     {
-        public static ParserFn<object> ToObj<T>(this ParserFn<T> parser)
+        public static ParserFn ToObj<T>(this ParserFn<T> parser)
         {
-            return parser.Select(a => (object)a);
+            return (ParserFn)parser.Select(a => (object)a);
         }
-        
-        public static ParserFn<T2> Select<T1, T2>(this ParserFn<T1> parser, Func<T1, T2> selector, string ruleName = null)
+
+        public static ParserFn<TR> Select<T1, TR>(this ParserFn parser, Func<T1, TR> selector, string ruleName = null)
         {
-            return new ParserFn<T2>()
+            return new ParserFn<TR>()
             {
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
-                    ParseResult<T1> result = state.Apply(parser);
+                    IParseResult<object> result = state.Apply(parser);
                     if (result.IsSuccess)
-                        return ParseResult<T2>.Success(selector(result.Result), result.Increment);
-                    return ParseResult<T2>.Failed();
+                        return ParseResult<TR>.Success(selector((T1)result.Result), result.Increment);
+                    return ParseResult<TR>.Failed();
+                }
+            };
+        }
+
+        public static ParserFn<TR> Select<T1, TR>(this ParserFn<T1> parser, Func<T1, TR> selector, string ruleName = null)
+        {
+            return new ParserFn<TR>()
+            {
+                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Fn = state =>
+                {
+                    IParseResult<T1> result = state.Apply(parser);
+                    if (result.IsSuccess)
+                        return ParseResult<TR>.Success(selector(result.Result), result.Increment);
+                    return ParseResult<TR>.Failed();
                 }
             };
         }
@@ -33,7 +48,7 @@ namespace Combinator.Helpers
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
-                    ParseResult<IEnumerable<char>> result = state.Apply(parser);
+                    IParseResult<IEnumerable<char>> result = state.Apply(parser);
                     if (result.IsSuccess)
                         return ParseResult<string>.Success(String.Concat(result.Result), result.Increment);
                     return ParseResult<string>.Failed();
@@ -48,7 +63,7 @@ namespace Combinator.Helpers
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
-                    ParseResult<IEnumerable<string>> result = state.Apply(parser);
+                    IParseResult<IEnumerable<string>> result = state.Apply(parser);
                     if (result.IsSuccess)
                         return ParseResult<string>.Success(String.Concat(result.Result), result.Increment);
                     return ParseResult<string>.Failed();

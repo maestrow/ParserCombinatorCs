@@ -1,6 +1,15 @@
 ﻿namespace Combinator
 {
-    public class ParseResult<T>
+    public interface IParseResult<out T>
+    {
+        bool IsSuccess { get; }
+
+        T Result { get; }
+
+        int Increment { get; }
+    }
+
+    public class ParseResult<T>: IParseResult<T>
     {
         #region Static
 
@@ -63,4 +72,5 @@
 
         #endregion
     }
+
 }

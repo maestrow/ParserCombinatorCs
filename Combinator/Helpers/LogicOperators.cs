@@ -8,11 +8,13 @@ namespace Combinator.Helpers
 {
     public static class LogicOperators
     {
+        [Obsolete("Такой And не поддается оптимизации. Используйте +")]
         public static ParserFn<T2> And<T1, T2>(this ParserFn<T1> p1, ParserFn<T2> p2, string ruleName = null)
         {
             return And(p1, p2, (t1, t2) => t2, ruleName);
         }
 
+        [Obsolete("Такой And не поддается оптимизации. Используйте +")]
         public static ParserFn<TR> And<T1, T2, TR>(this ParserFn<T1> p1, ParserFn<T2> p2, Func<T1, T2, TR> selector, string ruleName = null)
         {
             return new ParserFn<TR>()
@@ -40,7 +42,7 @@ namespace Combinator.Helpers
                 Fn = state =>
                 {
                     var lisT = new List<T>();
-                    ParseResult<T> presult;
+                    IParseResult<T> presult;
                     foreach (ParserFn<T> parser in parsers)
                     {
                         presult = state.Apply(parser);
@@ -67,7 +69,7 @@ namespace Combinator.Helpers
                 {
                     foreach (ParserFn<T> parser in parsers)
                     {
-                        ParseResult<T> presult = state.Apply(parser);
+                        IParseResult<T> presult = state.Apply(parser);
                         if (presult.IsSuccess)
                             return ParseResult<T>.Success(presult.Result);
                     }
@@ -83,11 +85,6 @@ namespace Combinator.Helpers
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state => new ParseResult<T>(!state.Apply(parser).IsSuccess)
             };
-        }
-
-        private static string ParsersToString<T>(IEnumerable<ParserFn<T>> parsers)
-        {
-            return parsers.Select(a => a.Name).Aggregate((a, b) => string.Format("{0}, {1}", a, b));
         }
 
     }

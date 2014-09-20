@@ -13,7 +13,7 @@ namespace Combinator.Helpers
                 Name = ruleName ?? Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
-                    ParseResult<T> presult = state.Apply(parser);
+                    IParseResult<T> presult = state.Apply(parser);
                     if (presult.IsSuccess && predicate(presult.Result))
                         return ParseResult<T>.Success(presult.Result);
                     return ParseResult<T>.Failed();

@@ -55,7 +55,7 @@ namespace Combinator.Helpers
                 Fn = state =>
                 {
                     var listResult = new List<T>();
-                    ParseResult<T> presult;
+                    IParseResult<T> presult;
                     do
                     {
                         presult = state.Apply(parser);
@@ -72,7 +72,7 @@ namespace Combinator.Helpers
         private static List<T> many<T>(ParserFn<T> parser, State state)
         {
             var listResult = new List<T>();
-            ParseResult<T> presult;
+            IParseResult<T> presult;
             do
             {
                 presult = state.Apply(parser);

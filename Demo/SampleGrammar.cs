@@ -13,7 +13,7 @@ namespace Demo
         public static string Test()
         {
             var state = new State("ababab");
-            ParseResult<string> result = state.Apply(Top);
+            IParseResult<string> result = state.Apply(Top);
             return result.Result;
         }
         
