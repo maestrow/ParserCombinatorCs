@@ -8,14 +8,14 @@ namespace Combinator.Helpers
 {
     public static class LogicOperators
     {
-        public static And And(this ParserFn p1, ParserFn p2, string ruleName = null)
+        public static AndParser And(this ParserFn p1, ParserFn p2, string ruleName = null)
         {
-            return new And(new [] {p1, p2}, ruleName);
+            return new AndParser(new [] {p1, p2}, ruleName);
         }
 
-        public static And And(this IEnumerable<ParserFn> parsers, string ruleName = null)
+        public static AndParser And(this IEnumerable<ParserFn> parsers, string ruleName = null)
         {
-            return new And(parsers, ruleName);
+            return new AndParser(parsers, ruleName);
         }
 
         public static ParserFn Or(this ParserFn p1, ParserFn p2, string ruleName = null)

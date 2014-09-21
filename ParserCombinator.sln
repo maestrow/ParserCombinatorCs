@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinator", "Combinator\Combinator.csproj", "{A6D5B95F-7E8E-4C4D-8B32-F18FA2976CC1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{E797A082-4CA6-417F-B576-F41CC35B296A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F2791367-0B10-4E1A-987E-8299C6108583}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{9AB8546F-F384-4698-B709-BA7C42C8B560}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "completed", "completed", "{C5540509-7662-4720-8DCE-53A5956F1BE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pending", "pending", "{FE726399-D231-4818-9487-CE4519EC4067}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +36,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5540509-7662-4720-8DCE-53A5956F1BE2} = {9AB8546F-F384-4698-B709-BA7C42C8B560}
+		{FE726399-D231-4818-9487-CE4519EC4067} = {9AB8546F-F384-4698-B709-BA7C42C8B560}
 	EndGlobalSection
 EndGlobal

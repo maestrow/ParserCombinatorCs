@@ -28,9 +28,9 @@ namespace Combinator
             return Name;
         }
 
-        public static And operator +(ParserFn op1, ParserFn op2)
+        public static AndParser operator +(ParserFn op1, ParserFn op2)
         {
-            return new And(new[] {op1, op2});
+            return new AndParser(new[] {op1, op2});
         }
     }
     
