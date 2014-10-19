@@ -15,13 +15,13 @@ namespace Combinator.Infrastructure
 
         private Stack<Tree<T>> parents;
 
-        public void LevelUp()
+        public void LevelDown()
         {
             parents.Push(pointer);
             pointer = pointer.Last().SubTree;
         }
 
-        public void LevelDown()
+        public void LevelUp()
         {
             pointer = parents.Pop();
         }

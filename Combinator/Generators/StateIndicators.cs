@@ -5,9 +5,9 @@ namespace Combinator.Helpers
     public static class StateIndicators
     {
 
-        public static ParserFn Begin()
+        public static Parser Begin()
         {
-            return new ParserFn()
+            return new Parser()
             {
                 Name = Helper.GetCurrentMethod(),
                 Fn = state =>
@@ -19,9 +19,9 @@ namespace Combinator.Helpers
             };
         }
 
-        public static ParserFn End()
+        public static Parser End()
         {
-            return new ParserFn()
+            return new Parser()
             {
                 Name = Helper.GetCurrentMethod(),
                 Fn = state =>
@@ -33,9 +33,9 @@ namespace Combinator.Helpers
             };
         }
 
-        public static ParserFn isBol()
+        public static Parser isBol()
         {
-            return new ParserFn()
+            return new Parser()
             {
                 Name = Helper.GetCurrentMethod(),
                 Fn = state =>
@@ -53,9 +53,9 @@ namespace Combinator.Helpers
         }
 
 
-        public static ParserFn isEol()
+        public static Parser isEol()
         {
-            return new ParserFn()
+            return new Parser()
             {
                 Name = Helper.GetCurrentMethod(),
                 Fn = state =>

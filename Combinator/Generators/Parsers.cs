@@ -6,13 +6,14 @@ using Combinator.Infrastructure;
 
 namespace Combinator
 {
-    public static class Parser
+    public static class Parsers
     {
-        public static ParserFn Char(string ruleName = null)
+        public static Parser Char()
         {
-            return new ParserFn
+            return new Parser
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name = Helper.GetCurrentMethod(),
+                Description = "Any char",
                 Fn = state =>
                 {
                     if (!state.Eof())
@@ -24,11 +25,13 @@ namespace Combinator
             };
         }
 
-        public static ParserFn Char(char ch, string ruleName = null)
+        public static Parser Char(char ch)
         {
-            return new ParserFn
+            return new Parser
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name = Helper.GetCurrentMethod(),
+                Description = "Specified char",
+                Parameters = new Dictionary<string, object>() {{"ch", ch}},
                 Fn = state =>
                 {
                     if (!state.Eof() && ch == state.Input[state.CurrentPosition])
@@ -40,11 +43,12 @@ namespace Combinator
             };
         }
 
-        public static ParserFn String(string substring, string ruleName = null)
+        public static Parser String(string substring)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
+                Parameters = new Dictionary<string, object>() {{"substring", substring}},
                 Fn = state =>
                 {
                     if (checkString(substring, state))
@@ -54,11 +58,11 @@ namespace Combinator
             };
         }
 
-        public static ParserFn Strings(List<string> substrings, string ruleName = null)
+        public static Parser Strings(List<string> substrings)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     foreach (string substring in substrings)
@@ -71,11 +75,11 @@ namespace Combinator
             };
         }
 
-        public static ParserFn RegEx(string pattern, string ruleName = null)
+        public static Parser RegEx(string pattern)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     if (!pattern.StartsWith("^"))

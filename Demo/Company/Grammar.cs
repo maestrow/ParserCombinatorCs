@@ -12,25 +12,28 @@ namespace Demo.Company
     {
         public static string Test()
         {
-            ParserFn rule = Top();
+            Parser rule = Top();
             var state = new State("Microsoft { Ivan Ivanov, Peter Petrov, Sidor Sidorov }");
             StringBuilder result = new StringBuilder();
             
             ParseResult parseResult = state.Apply(rule);
-            result.AppendLine(parseResult.Result.ToString());
+            //result.AppendLine(parseResult.Result.ToString());
             result.AppendLine("\r\n==============================================\r\n");
             result.AppendLine(state.debugInfo.ToString());
 
             return result.ToString();
         }
 
-        public static ParserFn Top()
+        public static Parser Top()
         {
-            ParserFn companyName = Parser.RegEx(@"\w+", "company name");
-            ParserFn employee = (
-                Parser.RegEx(@"\w+", "first name") +
-                Parser.String(" ") +
-                Parser.RegEx(@"\w+", "last name"))
+            var companyName = new Rule("companyName");
+            var employee = new Rule("employee");
+            var employeeItem = new Rule("employeeItem");
+            var company = new Rule("company");
+            
+            
+            companyName.Expr = Parsers.RegEx(@"\w+");
+            employee.Expr = (Parsers.RegEx(@"\w+") + Parsers.String(" ") + Parsers.RegEx(@"\w+"))
                 .Select((List<object> values) => new Employee()
                 {
                     Name = new PersonName()
@@ -41,10 +44,10 @@ namespace Demo.Company
                 });
 
 
-            ParserFn employeeItem = (employee + Parser.Char(',').Optional() + Parser.RegEx(@"\s*"))
+            employeeItem.Expr = (employee + Parsers.Char(',').Optional() + Parsers.RegEx(@"\s*"))
                 .Select((List<object> values) => (Employee)values[0]);
 
-            ParserFn company = (companyName + Parser.String(" { ") + employeeItem.AtLeastOnce() + Parser.Char('}'))
+            company.Expr = (companyName + Parsers.String(" { ") + employeeItem.AtLeastOnce() + Parsers.Char('}'))
                 .Select((List<object> values) => new Company() 
                 { 
                     CompanyName = values[0].ToString(), 

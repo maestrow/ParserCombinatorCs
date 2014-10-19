@@ -17,14 +17,9 @@ namespace Demo
             return result.Result.ToString();
         }
         
-        public static ParserFn Top = new List<ParserFn>
-        {
-            Parser.Char('a'), 
-            Parser.Char('b')
-        }
-        .And()
-        .Join()
-        .AtLeastOnce()
-        .Join();
+        public static Parser Top = (Parsers.Char('a') + Parsers.Char('b'))
+            .Join()
+            .AtLeastOnce()
+            .Join();
     }
 }

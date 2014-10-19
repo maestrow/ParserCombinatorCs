@@ -6,11 +6,11 @@ namespace Combinator.Helpers
 {
     public static class Quantifiers
     {
-        public static ParserFn AtLeastOnce(this ParserFn parser, string ruleName = null)
+        public static Parser AtLeastOnce(this Parser parser)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     List<object> listResult = many(parser, state);
@@ -22,11 +22,11 @@ namespace Combinator.Helpers
             };
         }
 
-        public static ParserFn Any(this ParserFn parser, string ruleName = null)
+        public static Parser Any(this Parser parser)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     return ParseResult.Success(many(parser, state));
@@ -34,11 +34,11 @@ namespace Combinator.Helpers
             };
         }
 
-        public static ParserFn Optional(this ParserFn parser, string ruleName = null)
+        public static Parser Optional(this Parser parser)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     var presult = state.Apply(parser);
@@ -47,11 +47,11 @@ namespace Combinator.Helpers
             };
         }
 
-        public static ParserFn RepeatExactly(this ParserFn parser, int count, string ruleName = null)
+        public static Parser RepeatExactly(this Parser parser, int count)
         {
-            return new ParserFn()
+            return new Parser()
             {
-                Name = ruleName ?? Helper.GetCurrentMethod(),
+                Name  = Helper.GetCurrentMethod(),
                 Fn = state =>
                 {
                     var listResult = new List<object>();
@@ -69,7 +69,7 @@ namespace Combinator.Helpers
             };
         }
 
-        private static List<object> many(ParserFn parser, State state)
+        private static List<object> many(Parser parser, State state)
         {
             var listResult = new List<object>();
             ParseResult presult;

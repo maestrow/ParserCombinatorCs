@@ -16,23 +16,22 @@ namespace Combinator
 
         public int CurrentPosition { get; private set; }
 
-        public ParseResult Apply(ParserFn parser)
+        public ParseResult Apply(Parser parser)
         {
             int savedPos = this.CurrentPosition;  // Сохраняем позицию
             debugInfo.Push(new AppliedRule(parser));
-            debugInfo.LevelUp();
-            ParseResult result = parser.Fn(this); // здесь позиция может измениться 
             debugInfo.LevelDown();
+            ParseResult result = parser.Fn(this); // здесь позиция может измениться 
+            debugInfo.LevelUp();
             if (result.IsSuccess)
                 this.CurrentPosition += result.Increment;
             else
                 this.CurrentPosition = savedPos;  // восстанавливаем позицию
-            debugInfo.Last().IsSuccess = result.IsSuccess;
-            debugInfo.Last().SetExcerpt(CurrentPosition, Input);
+            debugInfo.Last().SetResult(result.IsSuccess, savedPos, CurrentPosition, Input);
             return result;
         }
 
-        public ParseResult Lookahead(ParserFn parser)
+        public ParseResult Lookahead(Parser parser)
         {
             int savedPos = this.CurrentPosition;  // Сохраняем позицию
             ParseResult result = parser.Fn(this); // здесь позиция может измениться 
