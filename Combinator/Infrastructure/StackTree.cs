@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Combinator.Infrastructure
 {
-    public class StackTree<T>: Tree<T>
+    public class StackTree<T>: Tree<T> where T : class
     {
         public StackTree()
         {

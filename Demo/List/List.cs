@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Combinator.Infrastructure;
 
 namespace Demo.List
 {
-    public class List: List<string>
+    public class List: Tree<string>
     {
-        public List(IEnumerable<string> list): base(list)
+        public List(): this(null)
+        {
+        }
+
+        public List(IEnumerable<TreeItem<string>> list): base(list)
         {
         }
 
@@ -18,7 +23,18 @@ namespace Demo.List
 
         public override string ToString()
         {
-            return this.DefaultIfEmpty().Aggregate((a, b) => string.Format("{0}, {1}", a, b));
+            return Recursive(ItemToString, string.Empty);
+        }
+
+        private string ItemToString(string item, List<int> numbers, string result)
+        {
+            result += indent(numbers.Count) + item + "\n";
+            return result;
+        }
+
+        private string indent(int level)
+        {
+            return Enumerable.Repeat("  ", level).DefaultIfEmpty().Aggregate((a, b) => a + b);
         }
     }
 }

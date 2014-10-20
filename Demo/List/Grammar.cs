@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Combinator;
 using Combinator.Helpers;
+using Combinator.Infrastructure;
 
 namespace Demo.List
 {
@@ -14,7 +16,7 @@ namespace Demo.List
         public string Test()
         {
             Parser rule = List(0);
-            var state = new State("* 111\n* 222\n* 333");
+            var state = new State("* 111\n* 222\n - 2.1\n - 2.2\n* 333");
             StringBuilder result = new StringBuilder();
 
             ParseResult parseResult = state.Apply(rule);
@@ -33,7 +35,7 @@ namespace Demo.List
         {
             list.Expr = Item()
                 .AtLeastOnce()
-                .Select((List<object> x) => new List(x.Select(i => i.ToString())));
+                .Select((List<object> x) => new List(x.Select(i => (TreeItem<string>) i)));
             
             bullet.Expr = Parsers.Char('-') | Parsers.Char('+') | Parsers.Char('*');
 
@@ -75,7 +77,13 @@ namespace Demo.List
                         + content
                         + StateIndicators.isEol()
                         + List(level+1).Optional())
-                        .Select((List<object> i) => i[4]);
+                        .Select((List<object> i) =>
+                        {
+                            TreeItem<string> treeItem = new TreeItem<string>();
+                            treeItem.Item = i[4].ToString();
+                            treeItem.SubTree = (Tree<string>)i[6] ?? new Tree<string>();
+                            return treeItem;
+                        });
 
                     return state.Apply0(item);
                 }
