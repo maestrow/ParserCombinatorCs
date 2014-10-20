@@ -29,48 +29,43 @@ namespace Demo.List
             return result.ToString();
         }
 
-        private Rule top;
-        private Rule list;
-        private Rule item;
-        private Rule indent;
-        private Rule bullet;
-        private Rule content;
+        private Rule top = new Rule("top");
+        private Rule list = new Rule("list");
+        private Rule item = new Rule("item");
+        private Rule bullet = new Rule("bullet");
+        private Rule content = new Rule("content");
         
         public Grammar()
         {
-            top = new Rule("top");
-            list = new Rule("list");
-            item = new Rule("item", (ParserGenerator)itemFn);
-            bullet = new Rule("bullet");
-            content = new Rule("content");
-
             top.Expr = list.Arg(0);
-
-            list.Expr = item
-                .AtLeastOnce()
-                .Select((List<object> x) => new List(x.Select(i => (TreeItem<string>) i)));
-
-            item.Expr = Parsers.Generate(itemFn);
-
+            list.Expr = Parsers.Generate(listGen);
+            item.Expr = Parsers.Generate(itemGen);
             bullet.Expr = Parsers.Char('-') | Parsers.Char('+') | Parsers.Char('*');
-
             content.Expr = Parsers.RegEx(@".+$", RegexOptions.Multiline);
         }
 
-        private Parser indentFn(IArgumentsProvider args)
+        private Parser listGen(IArgumentsProvider args)
         {
-            int level = (int)args.Peek();
+            int level = (int)args.Pop();
+            return item.Arg(level)
+                .AtLeastOnce()
+                .Select((List<object> x) => new List(x.Select(i => (TreeItem<string>)i)));
+        }
+
+        private Parser indentGen(IArgumentsProvider args)
+        {
+            int level = (int)args.Pop();
             return Parsers.Char(' ').RepeatExactly(level).Join();
         }
 
-        private Parser itemFn(IArgumentsProvider args)
+        private Parser itemGen(IArgumentsProvider args)
         {
             args.debugInfo.ParentLast().CustomInfo = args.Peek().ToString();
 
-            int level = (int)args.Peek();
+            int level = (int)args.Pop();
 
             return (StateIndicators.isBol()
-                + Parsers.Generate(indentFn)
+                + Parsers.Generate(indentGen).Arg(level)
                 + bullet
                 + Parsers.Char(' ')
                 + content

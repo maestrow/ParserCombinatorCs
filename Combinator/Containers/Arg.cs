@@ -21,7 +21,6 @@ namespace Combinator.Containers
         {
             state.Push(Argument);
             var result = state.Apply0(Expr);
-            state.Pop();
             return result;
         }
     }
