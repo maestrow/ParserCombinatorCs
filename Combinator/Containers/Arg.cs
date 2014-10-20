@@ -24,4 +24,12 @@ namespace Combinator.Containers
             return result;
         }
     }
+
+    public static class ArgGen
+    {
+        public static Parser Arg<T>(this Parser parser, T arg)
+        {
+            return new Arg<T>(parser, arg);
+        }
+    }
 }

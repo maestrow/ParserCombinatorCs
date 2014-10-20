@@ -27,4 +27,17 @@ namespace Combinator.Containers
             return ParseResult.Failed();
         }
     }
+
+    public static class SelectGen
+    {
+        public static Parser Select<T, TR>(this Parser parser, Func<T, TR> selector)
+        {
+            return new Select<T, TR>(parser, selector);
+        }
+
+        public static Parser Join(this Parser parser)
+        {
+            return new Select<object, string>(parser, String.Concat);
+        }
+    }
 }

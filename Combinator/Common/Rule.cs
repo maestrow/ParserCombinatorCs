@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Combinator.Atomics;
 using Combinator.Common;
 using Combinator.Containers.Abstract;
 
@@ -10,6 +11,10 @@ namespace Combinator
 {
     public class Rule: ContainerParser
     {
+        public Rule(): base("", null)
+        {
+        }
+
         public Rule(string name, string description = ""): base(name, null, description)
         {
         }

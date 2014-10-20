@@ -1,7 +1,7 @@
 ﻿using Combinator.Common;
 using Combinator.Infrastructure;
 
-namespace Combinator.Helpers
+namespace Combinator.Atomics
 {
     public static class StateIndicators
     {

@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Combinator;
+using Combinator.Atomics;
 using Combinator.Common;
 using Combinator.Generators;
-using Combinator.Helpers;
 using Combinator.Infrastructure;
 
 namespace Demo.List

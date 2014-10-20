@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Combinator.Common;
-using Combinator.Helpers;
 using Combinator.Infrastructure;
 
-namespace Combinator
+namespace Combinator.Atomics
 {
     public static class Parsers
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Combinator;
-using Combinator.Helpers;
 
 namespace Demo
 {

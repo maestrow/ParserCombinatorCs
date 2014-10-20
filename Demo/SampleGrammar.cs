@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Combinator;
+using Combinator.Atomics;
 using Combinator.Common;
-using Combinator.Helpers;
 
 namespace Demo
 {
