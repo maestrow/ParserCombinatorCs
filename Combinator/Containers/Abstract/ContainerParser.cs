@@ -1,4 +1,6 @@
-﻿namespace Combinator.Containers.Abstract
+﻿using Combinator.Common;
+
+namespace Combinator.Containers.Abstract
 {
     public abstract class ContainerParser: Parser, IContainerParser
     {
@@ -6,7 +8,11 @@
         {
         }
 
-        public ContainerParser(Parser parser)
+        public ContainerParser(Parser parser): this("", parser)
+        {
+        }
+
+        public ContainerParser(string name, Parser parser, string description = ""): base(name, description)
         {
             Fn = ParseFn;
             Expr = parser;

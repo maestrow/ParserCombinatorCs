@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Combinator.Common;
 using Combinator.Helpers;
 using Combinator.Infrastructure;
 
@@ -95,6 +97,14 @@ namespace Combinator
                     return ParseResult.Failed();
                 }
             };
+        }
+
+        public static Parser Generate(ParserGenerator generator)
+        {
+            return new Parser(state =>
+            {
+                return state.Apply0(generator(state));
+            });
         }
 
         private static bool checkString(string substring, State state)

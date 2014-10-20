@@ -3,20 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Combinator.Common;
 using Combinator.Containers.Abstract;
 
 namespace Combinator
 {
     public class Rule: ContainerParser
     {
-        public Rule(string name)
+        public Rule(string name, string description = ""): base(name, null, description)
         {
-            Name = name;
         }
 
-        public Rule(string name, string description): this(name)
+        public Rule(string name, ParserDelegate fn, string description = "")
+            : base(name, new Parser(fn), description)
         {
-            Description = description;
+        }
+
+        public Rule(string name, ParserGenerator generator, string description = "")
+            : base(name, Parsers.Generate(generator), description )
+        {
+        }
+
+        public Rule(string name, Parser parser, string description = "")
+            : base(name, parser, description)
+        {
         }
 
         protected override ParseResult ParseFn(State state)

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Combinator.Common;
 using Combinator.Containers.Abstract;
 using Combinator.Debugging;
 
 namespace Combinator
 {
-    public class State
+    public class State: IArgumentsProvider
     {
         private Stack<object> buffer = new Stack<object>();
 

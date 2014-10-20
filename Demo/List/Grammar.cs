@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Combinator;
+using Combinator.Common;
+using Combinator.Generators;
 using Combinator.Helpers;
 using Combinator.Infrastructure;
 
@@ -15,7 +17,7 @@ namespace Demo.List
     {
         public string Test()
         {
-            Parser rule = List(0);
+            Parser rule = top;
             var state = new State("* 111\n* 222\n - 2.1\n - 2.2\n* 333");
             StringBuilder result = new StringBuilder();
 
@@ -27,67 +29,60 @@ namespace Demo.List
             return result.ToString();
         }
 
-        Rule list = new Rule("list");
-        Rule bullet = new Rule("bullet");
-        Rule content = new Rule("content");
+        private Rule top;
+        private Rule list;
+        private Rule item;
+        private Rule indent;
+        private Rule bullet;
+        private Rule content;
         
         public Grammar()
         {
-            list.Expr = Item()
+            top = new Rule("top");
+            list = new Rule("list");
+            item = new Rule("item", (ParserGenerator)itemFn);
+            bullet = new Rule("bullet");
+            content = new Rule("content");
+
+            top.Expr = list.Arg(0);
+
+            list.Expr = item
                 .AtLeastOnce()
                 .Select((List<object> x) => new List(x.Select(i => (TreeItem<string>) i)));
-            
+
+            item.Expr = Parsers.Generate(itemFn);
+
             bullet.Expr = Parsers.Char('-') | Parsers.Char('+') | Parsers.Char('*');
 
             content.Expr = Parsers.RegEx(@".+$", RegexOptions.Multiline);
         }
 
-        private Parser List(int level)
+        private Parser indentFn(IArgumentsProvider args)
         {
-            return new Parser()
-            {
-                Name = "List",
-                Fn = state =>
-                {
-                    state.Push(level);
-                    var result = state.Apply0(list);
-                    state.Pop();
-                    return result;
-                }
-            };
+            int level = (int)args.Peek();
+            return Parsers.Char(' ').RepeatExactly(level).Join();
         }
 
-        private Parser Item()
+        private Parser itemFn(IArgumentsProvider args)
         {
-            return new Parser()
-            {
-                Name = "Item",
-                Fn = state =>
+            args.debugInfo.ParentLast().CustomInfo = args.Peek().ToString();
+
+            int level = (int)args.Peek();
+
+            return (StateIndicators.isBol()
+                + Parsers.Generate(indentFn)
+                + bullet
+                + Parsers.Char(' ')
+                + content
+                + StateIndicators.isEol()
+                + list.Arg(level + 1).Optional())
+                .Select((List<object> i) =>
                 {
-                    state.debugInfo.ParentLast().CustomInfo = state.Peek().ToString();
-
-                    int level = (int)state.Peek();
-
-                    Rule item = new Rule("item");
-
-                    item.Expr = (StateIndicators.isBol()
-                        + Parsers.Char(' ').RepeatExactly(level).Join()
-                        + bullet
-                        + Parsers.Char(' ')
-                        + content
-                        + StateIndicators.isEol()
-                        + List(level+1).Optional())
-                        .Select((List<object> i) =>
-                        {
-                            TreeItem<string> treeItem = new TreeItem<string>();
-                            treeItem.Item = i[4].ToString();
-                            treeItem.SubTree = (Tree<string>)i[6] ?? new Tree<string>();
-                            return treeItem;
-                        });
-
-                    return state.Apply0(item);
-                }
-            };
+                    TreeItem<string> treeItem = new TreeItem<string>();
+                    treeItem.Item = i[4].ToString();
+                    treeItem.SubTree = (Tree<string>) i[6] ?? new Tree<string>();
+                    return treeItem;
+                });
         }
     }
 }

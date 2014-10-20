@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IArgumentsProvider.cs" />
     <Compile Include="Containers\Abstract\ContainerParser.cs" />
     <Compile Include="Containers\Abstract\ListContainerParser.cs" />
     <Compile Include="Containers\And.cs" />
+    <Compile Include="Containers\Arg.cs" />
     <Compile Include="Containers\Join.cs" />
     <Compile Include="Containers\Not.cs" />
     <Compile Include="Containers\Or.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Common\IContainerParser.cs" />
     <Compile Include="Common\IListContainerParser.cs" />
     <Compile Include="Common\IParserInfo.cs" />
+    <Compile Include="Generators\Arguments.cs" />
     <Compile Include="Infrastructure\Helper.cs" />
     <Compile Include="Infrastructure\StackTree.cs" />
     <Compile Include="Infrastructure\Tree.cs" />

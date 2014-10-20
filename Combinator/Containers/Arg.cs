@@ -5,26 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Combinator.Common;
 using Combinator.Containers.Abstract;
-using Combinator.Infrastructure;
 
 namespace Combinator.Containers
 {
-    public class Not: ContainerParser
+    public class Arg<T>: ContainerParser
     {
-        public Not(): this(null)
+        public Arg(Parser parser, T arg): base(parser)
         {
+            Argument = arg;
         }
 
-        public Not(Parser parser)
-        {
-            Name = GetType().Name;
-            Expr = parser;
-        }
+        public T Argument { get; set; }
 
         protected override ParseResult ParseFn(State state)
         {
-            return new ParseResult(!state.Apply(Expr).IsSuccess);
+            state.Push(Argument);
+            var result = state.Apply0(Expr);
+            state.Pop();
+            return result;
         }
     }
-
 }

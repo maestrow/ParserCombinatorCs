@@ -1,21 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Combinator.Containers;
-using Combinator.Debugging;
 using Combinator.Helpers;
 
-namespace Combinator
+namespace Combinator.Common
 {
     public delegate ParseResult ParserDelegate(State state);
 
+    public delegate Parser ParserGenerator(IArgumentsProvider args);
+
     public class Parser : IParserInfo
     {
-        public Parser()
+        #region Ctors
+
+        public Parser(): this(null)
         {
+        }
+
+        public Parser(ParserDelegate fn): this("", fn)
+        {
+        }
+
+        public Parser(string name, ParserDelegate fn, string description = ""): this(name, description)
+        {
+            Fn = fn;
+        }
+
+        public Parser(string name, string description = "")
+        {
+            Name = name;
+            Description = description;
             Parameters = new Dictionary<string, object>();
         }
+
+        #endregion
+
+        #region Public Members
 
         public ParserDelegate Fn;
 
@@ -42,6 +62,8 @@ namespace Combinator
 
             return result;
         }
+
+        #endregion
 
         #region Operators
 

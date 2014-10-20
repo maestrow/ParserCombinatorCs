@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Combinator.Common;
 
 namespace Combinator.Containers.Abstract
 {
