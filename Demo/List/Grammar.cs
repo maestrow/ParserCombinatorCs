@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Combinator;
 using Combinator.Atomics;
 using Combinator.Common;
-using Combinator.Generators;
+using Combinator.Containers;
 using Combinator.Infrastructure;
 
 namespace Demo.List

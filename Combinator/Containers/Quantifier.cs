@@ -20,10 +20,11 @@ namespace Combinator.Containers
     {
         public int RepeatCount { get; set; }
 
-        public Quantifier(QuantifierType type, int count = 0)
+        public Quantifier(Parser parser, QuantifierType type, int count = 0)
         {
             Name = GetType().Name;
             Parameters = new Dictionary<string, object>() {{"type", typeToString(type, count)}};
+            Expr = parser;
             Type = type;
             RepeatCount = count;
         }
@@ -105,22 +106,22 @@ namespace Combinator.Containers
     {
         public static Quantifier AtLeastOnce(this Parser parser)
         {
-            return new Quantifier(QuantifierType.AtLeastOnce);
+            return new Quantifier(parser, QuantifierType.AtLeastOnce);
         }
 
         public static Quantifier Any(this Parser parser)
         {
-            return new Quantifier(QuantifierType.Any);
+            return new Quantifier(parser, QuantifierType.Any);
         }
 
         public static Quantifier Optional(this Parser parser)
         {
-            return new Quantifier(QuantifierType.Optional);
+            return new Quantifier(parser, QuantifierType.Optional);
         }
 
         public static Quantifier RepeatExactly(this Parser parser, int count)
         {
-            return new Quantifier(QuantifierType.RepeatExactly, count);
+            return new Quantifier(parser, QuantifierType.RepeatExactly, count);
         }
     }
 }
