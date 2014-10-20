@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pending", "pending", "{FE726399-D231-4818-9487-CE4519EC4067}"
 	ProjectSection(SolutionItems) = preProject
 		02 Оптимизация.md = 02 Оптимизация.md
+		03 Передача переменных внутри парсера.md = 03 Передача переменных внутри парсера.md
 	EndProjectSection
 EndProject
 Global

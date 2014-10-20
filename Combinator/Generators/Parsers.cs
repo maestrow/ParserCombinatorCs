@@ -75,18 +75,19 @@ namespace Combinator
             };
         }
 
-        public static Parser RegEx(string pattern)
+        public static Parser RegEx(string pattern, RegexOptions options = RegexOptions.None)
         {
             return new Parser()
             {
                 Name  = Helper.GetCurrentMethod(),
+                Parameters = new Dictionary<string, object>() {{"pattern", pattern}},
                 Fn = state =>
                 {
                     if (!pattern.StartsWith("^"))
                         pattern = "^" + pattern;
                     string rest = state.Input.Substring(state.CurrentPosition);
 
-                    var regex = new Regex(pattern);
+                    var regex = new Regex(pattern, options);
                     Match match = regex.Match(rest);
 
                     if (match.Success)

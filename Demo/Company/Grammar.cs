@@ -17,7 +17,7 @@ namespace Demo.Company
             StringBuilder result = new StringBuilder();
             
             ParseResult parseResult = state.Apply(rule);
-            //result.AppendLine(parseResult.Result.ToString());
+            result.AppendLine(parseResult.Result.ToString());
             result.AppendLine("\r\n==============================================\r\n");
             result.AppendLine(state.debugInfo.ToString());
 

@@ -12,6 +12,11 @@ namespace Combinator
 
     public class Parser : IParserInfo
     {
+        public Parser()
+        {
+            Parameters = new Dictionary<string, object>();
+        }
+
         public ParserDelegate Fn;
 
         public string Name { get; set; }
@@ -22,7 +27,20 @@ namespace Combinator
 
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Description) ? Name : Name + ". " + Description;
+            string result = Name;
+
+            var p = Parameters
+                .Select(kvp => string.Format("{0}={1}", kvp.Key, kvp.Value))
+                .DefaultIfEmpty()
+                .Aggregate((a, b) => string.Format("{0},{1}"));
+            
+            if (!string.IsNullOrEmpty(p))
+                result += string.Format("({0})", p);
+            
+            //if (!string.IsNullOrEmpty(Description)) 
+            //    result += ". " + Description;
+
+            return result;
         }
 
         #region Operators

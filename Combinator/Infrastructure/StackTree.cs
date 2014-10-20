@@ -11,8 +11,14 @@ namespace Combinator.Infrastructure
             parents = new Stack<Tree<T>>();
         }
 
+        /// <summary>
+        /// Указатель на поддерево конкретного узла
+        /// </summary>
         private Tree<T> pointer;
 
+        /// <summary>
+        /// Цепочка (стэк) родительских указателей данного указателя.
+        /// </summary>
         private Stack<Tree<T>> parents;
 
         public void LevelDown()
@@ -34,6 +40,11 @@ namespace Combinator.Infrastructure
         public T Last()
         {
             return pointer.Last().Item;
+        }
+
+        public T ParentLast()
+        {
+            return parents.Peek().Last().Item;
         }
     }
 }

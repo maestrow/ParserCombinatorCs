@@ -1,9 +1,14 @@
-﻿using Combinator.Debugging;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Combinator.Containers.Abstract;
+using Combinator.Debugging;
 
 namespace Combinator
 {
     public class State
     {
+        private Stack<object> buffer = new Stack<object>();
+
         public DebugInfo debugInfo { get; private set; }
 
         public State(string input)
@@ -31,6 +36,27 @@ namespace Combinator
             return result;
         }
 
+        /// <summary>
+        /// Применяет парсер. В случае успеха <see cref="CurrentPosition"/> изменяется (обычное поведение).
+        /// Возвращает результат применения парсера, но с Increment = 0.
+        /// Данный метод полезен в <see cref="ContainerParser">парсерах-контейнерах</see>, когда требуется применить парсер, находящийся внутри контейнера.
+        /// </summary>
+        /// <remarks>
+        /// Предположим, что метод парсера-контейнера состоит только из инструкции: return state.Apply(Expr).
+        /// Тогда при применении парсера-контейнера произойдет следующее:
+        /// - сначала применится содержимое контейнера (Expr), 
+        /// - а затем сам койтейнер. 
+        /// Смещение <see cref="CurrentPosition">текущей позиции</see> произойдет дважды.
+        /// Чтобы этого не происходило, контейнеры, которые сами не перемещают позицию, должны использовать данный метод для применения содержимого.
+        /// </remarks>
+        /// <param name="parser"></param>
+        /// <returns></returns>
+        public ParseResult Apply0(Parser parser)
+        {
+            var result = Apply(parser);
+            return new ParseResult(result.IsSuccess, result.Result, 0);
+        }
+
         public ParseResult Lookahead(Parser parser)
         {
             int savedPos = this.CurrentPosition;  // Сохраняем позицию
@@ -42,6 +68,21 @@ namespace Combinator
         public bool Eof()
         {
             return CurrentPosition >= Input.Length;
+        }
+
+        public object Pop()
+        {
+            return buffer.Pop();
+        }
+
+        public void Push(object obj)
+        {
+            buffer.Push(obj);
+        }
+
+        public object Peek()
+        {
+            return buffer.Peek();
         }
     }
 }

@@ -32,6 +32,12 @@ namespace Combinator.Debugging
 
         public string Excerpt { get; private set; }
 
+        /// <summary>
+        /// Любая информация, которую можно сохранить из пользовательского парсера.
+        /// Например, можно сохранить значения из буфера (state.Peek).
+        /// </summary>
+        public string CustomInfo { get; set; }
+
         public void SetResult(bool isSuccess, int posBefore, int posAfter, string input)
         {
             IsSuccess = isSuccess;
@@ -42,7 +48,7 @@ namespace Combinator.Debugging
 
         public override string ToString()
         {
-            return string.Format("{0} {1} '{2}' {3}", IsSuccess, PosAfter, Excerpt, ParserInfo);
+            return string.Format("{0} {1} '{2}' [{3}] {4}", IsSuccess, PosAfter, Excerpt, CustomInfo, ParserInfo);
         }
 
         private void setExcerpt(string input)
@@ -50,6 +56,7 @@ namespace Combinator.Debugging
             Excerpt = input.Substring(PosBefore, PosAfter-PosBefore);
             if (Excerpt.Length > 20)
                 Excerpt = Excerpt.Substring(0, 10) + " ... " + Excerpt.Substring(Excerpt.Length - 10);
+            Excerpt = Excerpt.Replace("\n", "\\n");
         }
     }
 }

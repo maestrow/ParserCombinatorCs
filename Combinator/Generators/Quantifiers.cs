@@ -52,6 +52,7 @@ namespace Combinator.Helpers
             return new Parser()
             {
                 Name  = Helper.GetCurrentMethod(),
+                Parameters = new Dictionary<string, object>() {{"count", count}},
                 Fn = state =>
                 {
                     var listResult = new List<object>();

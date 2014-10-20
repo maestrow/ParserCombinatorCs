@@ -21,8 +21,7 @@ namespace Combinator
 
         protected override ParseResult ParseFn(State state)
         {
-            var result = state.Apply(Expr);
-            return new ParseResult(result.IsSuccess, result.Result, 0);
+            return state.Apply0(Expr);
         }
     }
 }
