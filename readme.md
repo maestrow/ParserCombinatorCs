@@ -1,0 +1,2 @@
+This project were intended to learn parser combinators. And as attemt to create parser combinator library from scratch. 
+Project is no more developed, see successor project: https://github.com/maestrow/ffparsec.
