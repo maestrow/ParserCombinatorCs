@@ -7,7 +7,7 @@ namespace Combinator.Atomics
 {
     public static class Parsers
     {
-        public static Parser Char()
+        public static Parser AnyChar()
         {
             return new Parser
             {
